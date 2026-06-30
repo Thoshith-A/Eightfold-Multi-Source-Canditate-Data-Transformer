@@ -1,0 +1,333 @@
+{
+  "candidate_id": "cand-001",
+  "full_name": "John Smith",
+  "emails": [
+    "j.smith@workmail.com",
+    "john.smith@example.com"
+  ],
+  "phones": [
+    "+14155550132",
+    "+14155550144",
+    "+14155550177"
+  ],
+  "location": {
+    "city": "San Francisco",
+    "region": "California",
+    "country": "US"
+  },
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/johnasmith",
+    "github": "https://github.com/johnasmith",
+    "portfolio": "https://johnsmith.dev",
+    "other": []
+  },
+  "headline": "Senior Software Engineer",
+  "years_experience": 8.0,
+  "skills": [
+    {
+      "name": "Go",
+      "confidence": 0.99,
+      "sources": [
+        "ats_json",
+        "github",
+        "resume"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "confidence": 0.525,
+      "sources": [
+        "github"
+      ]
+    },
+    {
+      "name": "Kubernetes",
+      "confidence": 0.95,
+      "sources": [
+        "ats_json",
+        "resume"
+      ]
+    },
+    {
+      "name": "Mentoring",
+      "confidence": 0.135,
+      "sources": [
+        "notes"
+      ]
+    },
+    {
+      "name": "PostgreSQL",
+      "confidence": 0.35,
+      "sources": [
+        "resume"
+      ]
+    },
+    {
+      "name": "Python",
+      "confidence": 0.99,
+      "sources": [
+        "ats_json",
+        "github",
+        "resume"
+      ]
+    },
+    {
+      "name": "REST APIs",
+      "confidence": 0.35,
+      "sources": [
+        "resume"
+      ]
+    },
+    {
+      "name": "React",
+      "confidence": 0.35,
+      "sources": [
+        "resume"
+      ]
+    },
+    {
+      "name": "Shell",
+      "confidence": 0.525,
+      "sources": [
+        "github"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Acme Corp",
+      "title": "Staff Software Engineer",
+      "start": "2021-01",
+      "end": null,
+      "summary": "Led platform reliability work and mentored junior engineers."
+    },
+    {
+      "company": "Globex Inc",
+      "title": "Software Engineer",
+      "start": "2019-01",
+      "end": "2021-01",
+      "summary": "Built internal tooling and data pipelines."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Massachusetts Institute of Technology",
+      "degree": "B.S.",
+      "field": "Computer Science",
+      "end_year": 2018
+    }
+  ],
+  "overall_confidence": 0.694,
+  "provenance": [
+    {
+      "field": "candidate_id",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "candidate_id",
+      "source": "csv_recruiter",
+      "method": "csv_column"
+    },
+    {
+      "field": "education",
+      "source": "resume",
+      "method": "regex_extraction"
+    },
+    {
+      "field": "emails",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "emails",
+      "source": "csv_recruiter",
+      "method": "csv_column"
+    },
+    {
+      "field": "emails",
+      "source": "resume",
+      "method": "regex_extraction"
+    },
+    {
+      "field": "experience",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "experience",
+      "source": "csv_recruiter",
+      "method": "csv_column"
+    },
+    {
+      "field": "experience",
+      "source": "github",
+      "method": "github_api"
+    },
+    {
+      "field": "experience",
+      "source": "resume",
+      "method": "date_parse"
+    },
+    {
+      "field": "experience",
+      "source": "resume",
+      "method": "regex_extraction"
+    },
+    {
+      "field": "experience.summary",
+      "source": "llm:gemini-2.5-flash",
+      "method": "llm_extraction"
+    },
+    {
+      "field": "experience.title",
+      "source": "ats_json",
+      "method": "merge_winner"
+    },
+    {
+      "field": "full_name",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "full_name",
+      "source": "ats_json",
+      "method": "merge_winner"
+    },
+    {
+      "field": "full_name",
+      "source": "github",
+      "method": "github_api"
+    },
+    {
+      "field": "headline",
+      "source": "llm:gemini-2.5-flash",
+      "method": "llm_extraction"
+    },
+    {
+      "field": "links.github",
+      "source": "github",
+      "method": "github_api"
+    },
+    {
+      "field": "links.linkedin",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "links.portfolio",
+      "source": "github",
+      "method": "github_api"
+    },
+    {
+      "field": "location.city",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "location.city",
+      "source": "ats_json",
+      "method": "merge_winner"
+    },
+    {
+      "field": "location.city",
+      "source": "notes",
+      "method": "heuristic_extraction"
+    },
+    {
+      "field": "location.country",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "location.country",
+      "source": "ats_json",
+      "method": "country_normalize"
+    },
+    {
+      "field": "location.country",
+      "source": "github",
+      "method": "country_normalize"
+    },
+    {
+      "field": "location.country",
+      "source": "github",
+      "method": "github_api"
+    },
+    {
+      "field": "location.region",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "location.region",
+      "source": "ats_json",
+      "method": "merge_winner"
+    },
+    {
+      "field": "phones",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    },
+    {
+      "field": "phones",
+      "source": "ats_json",
+      "method": "phone_normalize"
+    },
+    {
+      "field": "phones",
+      "source": "csv_recruiter",
+      "method": "csv_column"
+    },
+    {
+      "field": "phones",
+      "source": "csv_recruiter",
+      "method": "phone_normalize"
+    },
+    {
+      "field": "phones",
+      "source": "notes",
+      "method": "heuristic_extraction"
+    },
+    {
+      "field": "phones",
+      "source": "notes",
+      "method": "phone_normalize"
+    },
+    {
+      "field": "phones",
+      "source": "resume",
+      "method": "phone_normalize"
+    },
+    {
+      "field": "phones",
+      "source": "resume",
+      "method": "regex_extraction"
+    },
+    {
+      "field": "skills",
+      "source": "ats_json",
+      "method": "skill_canonicalize"
+    },
+    {
+      "field": "skills",
+      "source": "github",
+      "method": "skill_canonicalize"
+    },
+    {
+      "field": "skills",
+      "source": "notes",
+      "method": "skill_canonicalize"
+    },
+    {
+      "field": "skills",
+      "source": "resume",
+      "method": "skill_canonicalize"
+    },
+    {
+      "field": "years_experience",
+      "source": "ats_json",
+      "method": "ats_field_map"
+    }
+  ]
+}

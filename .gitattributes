@@ -1,0 +1,6 @@
+# Normalize line endings to LF in the repo (consistent across Windows/macOS/Linux).
+* text=auto eol=lf
+
+# Binary fixtures must not be line-ending-normalized.
+*.docx binary
+*.pdf binary

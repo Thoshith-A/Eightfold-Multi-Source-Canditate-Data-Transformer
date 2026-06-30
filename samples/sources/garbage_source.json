@@ -1,0 +1,2 @@
+{ "skillTags": ["Python", "Go", "currentTitle": "Staff Engineer",,,
+  this file is deliberately CORRUPT json to prove graceful degradation

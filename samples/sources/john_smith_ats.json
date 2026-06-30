@@ -1,0 +1,15 @@
+{
+  "candidate_id": "cand-001",
+  "givenName": "John",
+  "surname": "Smith",
+  "emails": ["john.smith@example.com", "j.smith@workmail.com"],
+  "phoneNumber": "+1-415-555-0144",
+  "currentTitle": "Staff Software Engineer",
+  "currentEmployer": "Acme Corp",
+  "skillTags": ["Python", "Kubernetes", "Go"],
+  "city": "San Francisco",
+  "state": "California",
+  "country": "United States",
+  "linkedin": "https://www.linkedin.com/in/johnasmith",
+  "yearsExperience": 8
+}

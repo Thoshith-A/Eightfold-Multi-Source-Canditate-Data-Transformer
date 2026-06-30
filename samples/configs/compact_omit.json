@@ -1,0 +1,14 @@
+{
+  "fields": [
+    { "path": "candidate_id", "type": "string", "required": true },
+    { "path": "full_name", "type": "string" },
+    { "path": "city", "from": "location.city", "type": "string" },
+    { "path": "country", "from": "location.country", "type": "string" },
+    { "path": "headline", "type": "string" },
+    { "path": "top_skill", "from": "skills[0].name", "type": "string" },
+    { "path": "github", "from": "links.github", "type": "string" }
+  ],
+  "include_confidence": false,
+  "include_provenance": false,
+  "on_missing": "omit"
+}

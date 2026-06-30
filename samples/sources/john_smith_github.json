@@ -1,0 +1,20 @@
+{
+  "user": {
+    "login": "johnasmith",
+    "name": "John Smith",
+    "company": "@Acme Corp",
+    "blog": "https://johnsmith.dev",
+    "location": "SF, CA, USA",
+    "bio": "Backend engineer. Distributed systems, Go, and good coffee.",
+    "email": null,
+    "html_url": "https://github.com/johnasmith",
+    "public_repos": 12
+  },
+  "repos": [
+    {"name": "dist-cache", "language": "Go", "fork": false, "stargazers_count": 41},
+    {"name": "react-dashboard", "language": "JavaScript", "fork": false, "stargazers_count": 7},
+    {"name": "etl-scripts", "language": "Python", "fork": false, "stargazers_count": 12},
+    {"name": "dotfiles", "language": "Shell", "fork": false, "stargazers_count": 2}
+  ],
+  "languages": {"Go": 50000, "Python": 30000, "JavaScript": 12000, "Shell": 1500}
+}

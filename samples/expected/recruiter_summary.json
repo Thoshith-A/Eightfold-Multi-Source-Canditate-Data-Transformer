@@ -1,0 +1,17 @@
+{
+  "full_name": "John Smith",
+  "primary_email": "j.smith@workmail.com",
+  "phone": "+14155550132",
+  "skills": [
+    "Go",
+    "JavaScript",
+    "Kubernetes",
+    "Mentoring",
+    "PostgreSQL",
+    "Python",
+    "REST APIs",
+    "React",
+    "Shell"
+  ],
+  "overall_confidence": 0.694
+}

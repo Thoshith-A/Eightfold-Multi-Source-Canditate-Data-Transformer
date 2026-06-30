@@ -1,0 +1,4 @@
+candidate_id,name,email,phone,current_company,title
+cand-100,Ada Lovelace,ada.lovelace@example.com,(415) 555-0150,Analytical Engines,Lead Engineer
+cand-101,Alan M. Turing,alan.turing@example.com,(415) 555-0151,Bletchley Labs,Cryptographer
+cand-102,Grace Hopper,grace.hopper@example.com,(415) 555-0152,Naval Systems,Systems Architect

@@ -1,0 +1,36 @@
+# --- Secrets: NEVER commit a real key. Only .env.example is tracked. ---------
+.env
+.env.*
+!.env.example
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+
+# --- Test / coverage ---------------------------------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# --- Editor / OS -------------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Node (only relevant if the optional Stage 9 frontend is built) ----------
+node_modules/
+web/frontend/dist/

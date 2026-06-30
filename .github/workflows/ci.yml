@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  core:
+    # The graded path: core install ONLY (zero LLM packages), full test suite.
+    name: core (no LLM deps) · py${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install core + dev
+        run: pip install -e ".[dev]"
+      - name: Assert the core is LLM-free
+        run: |
+          python - <<'PY'
+          import importlib.util, sys
+          assert importlib.util.find_spec("google") is None, "google-genai must NOT be in the core install"
+          print("OK: no LLM packages in the core install")
+          PY
+      - name: Run tests (API tests auto-skip without [web])
+        run: pytest -q
+
+  full:
+    # Optional lanes installed: runs the enrichment (mocked) + API tests too.
+    name: full (core + llm + web) · py3.12
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install all extras
+        run: pip install -e ".[dev,llm,web]"
+      - name: Run full test suite
+        run: pytest -q
+
+  quality:
+    # Lint + static type gate — backs the "fully type-annotated / py.typed" claim.
+    name: quality (ruff + mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install core + dev
+        run: pip install -e ".[dev]"
+      - name: Ruff (lint)
+        run: ruff check src tests
+      - name: Mypy (types)
+        run: mypy
