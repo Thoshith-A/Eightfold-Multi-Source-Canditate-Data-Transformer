@@ -119,8 +119,10 @@ def test_github_extract() -> None:
 # --------------------------------------------------------------------------- #
 def test_resume_extract() -> None:
     by = _by_field(_extract("john_smith_resume.docx"))
+    assert by["full_name"] == ["John A. Smith"]          # name from the header block
     assert "john.smith@example.com" in by["emails"]
     assert "+14155550132" in by["phones"]
+    assert by["links.github"] == ["https://github.com/johnasmith"]  # link extraction
 
     experiences = by["experience"]
     acme = next(e for e in experiences if e["company"] == "Acme Corp")

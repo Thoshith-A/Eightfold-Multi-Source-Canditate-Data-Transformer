@@ -117,7 +117,7 @@
       "end_year": 2018
     }
   ],
-  "overall_confidence": 0.694,
+  "overall_confidence": 0.6958,
   "provenance": [
     {
       "field": "candidate_id",
@@ -208,6 +208,11 @@
       "field": "links.github",
       "source": "github",
       "method": "github_api"
+    },
+    {
+      "field": "links.github",
+      "source": "resume",
+      "method": "regex_extraction"
     },
     {
       "field": "links.linkedin",
