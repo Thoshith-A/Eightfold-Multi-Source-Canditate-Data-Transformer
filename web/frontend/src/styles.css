@@ -56,6 +56,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .meta { color: var(--muted); font-size: 13px; margin: 0 2px 12px; }
 .meta-llm { color: var(--llm); }
 
+.notice { border-radius: 8px; padding: 8px 12px; font-size: 13px; margin: 0 2px 14px; }
+.notice.ok { background: rgba(46,160,67,.12); border: 1px solid rgba(46,160,67,.5); color: #7fdd97; }
+.notice.warn { background: rgba(217,139,0,.12); border: 1px solid rgba(217,139,0,.5); color: var(--llm); }
+
 .card {
   background: var(--panel); border: 1px solid var(--line);
   border-radius: 14px; margin-bottom: 18px; overflow: hidden;

@@ -61,14 +61,31 @@ def _resolve_config(config: str) -> OutputConfig:
     return OutputConfig.from_file(path)
 
 
-def _build_enricher(config: OutputConfig, *, force: bool):
-    """Build the optional enricher, or return ``None`` (never crash the request)."""
+def _build_enricher_with_status(config: OutputConfig, *, want_enrich: bool, force: bool):
+    """Build the optional enricher AND a human-readable status for the UI.
 
+    Returns ``(enricher_or_None, status_message)``. The status makes the silent
+    deterministic fallback legible — e.g. "no API key in the server environment"
+    — instead of the UI just showing empty prose fields with no explanation.
+    """
+
+    if not want_enrich:
+        return None, None
     try:
-        from transformer.enrich.llm import build_enricher_from_config
+        from transformer.enrich.llm import _read_api_key, build_enricher_from_config
     except Exception:
-        return None
-    return build_enricher_from_config(config, force=force)
+        return None, "enrichment unavailable: optional [llm] extra is not installed."
+
+    enricher = build_enricher_from_config(config, force=force)
+    if enricher is not None:
+        model = config.enrichment.model if config.enrichment else "gemini-2.5-flash"
+        return enricher, f"enrichment ON (model {model})."
+    if not _read_api_key():
+        return None, (
+            "enrichment was requested but no GEMINI_API_KEY / GOOGLE_API_KEY is set in the "
+            "SERVER environment — ran deterministically (headline/summary stay null)."
+        )
+    return None, "enrichment requested but the client could not be initialized — ran deterministically."
 
 
 @app.get("/api/health")
@@ -120,7 +137,7 @@ async def transform(
             (tmp_dir / safe_name).write_bytes(await upload.read())
 
         want_enrich = enrich or (cfg.enrichment is not None and cfg.enrichment.enabled)
-        enricher = _build_enricher(cfg, force=enrich) if want_enrich else None
+        enricher, status = _build_enricher_with_status(cfg, want_enrich=want_enrich, force=enrich)
 
         try:
             outputs = pipeline.run([str(tmp_dir)], cfg, enricher=enricher)
@@ -133,6 +150,7 @@ async def transform(
         "candidates": outputs,
         "count": len(outputs),
         "enriched": enricher is not None,
+        "enrichment_status": status,
         "enrichment_report": report,
     }
 
@@ -150,7 +168,7 @@ def transform_samples(config: str = Form("default"), enrich: bool = Form(False))
         raise HTTPException(status_code=400, detail=f"config error: {exc}")
 
     want_enrich = enrich or (cfg.enrichment is not None and cfg.enrichment.enabled)
-    enricher = _build_enricher(cfg, force=enrich) if want_enrich else None
+    enricher, status = _build_enricher_with_status(cfg, want_enrich=want_enrich, force=enrich)
     try:
         outputs = pipeline.run([str(sources)], cfg, enricher=enricher)
     except Exception as exc:
@@ -160,6 +178,7 @@ def transform_samples(config: str = Form("default"), enrich: bool = Form(False))
         "candidates": outputs,
         "count": len(outputs),
         "enriched": enricher is not None,
+        "enrichment_status": status,
         "enrichment_report": report,
     }
 

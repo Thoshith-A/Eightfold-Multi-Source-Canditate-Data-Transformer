@@ -42,7 +42,7 @@ dependencies = [
 [project.optional-dependencies]
 # The ONLY place an LLM SDK appears. Installed via `pip install -e ".[llm]"`.
 # Pinned to the unified Google Gen AI SDK (`from google import genai`).
-llm = ["google-genai>=1.0.0,<3"]
+llm = ["google-genai>=1.0.0,<3", "python-dotenv>=1.0"]
 # Optional thin HTTP layer (Stage 9). Wraps the SAME pipeline; no core dep.
 web = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
 # Test/dev tooling, kept out of the runtime core.

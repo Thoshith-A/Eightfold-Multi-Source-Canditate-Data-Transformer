@@ -265,6 +265,11 @@ export default function App() {
               <span className="meta-llm"> · {result.enrichment_report.length} LLM gap-fill(s) @ conf 0.4</span>
             )}
           </div>
+          {result.enrichment_status && (
+            <div className={result.enriched ? "notice ok" : "notice warn"}>
+              {result.enriched ? "✓ " : "⚠ "}{result.enrichment_status}
+            </div>
+          )}
           {result.candidates.map((c, i) => (
             <CandidateCard key={i} data={c} llmFields={llmFields} />
           ))}

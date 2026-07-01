@@ -36,7 +36,20 @@ DEFAULT_CACHE_DIR = os.environ.get("LLM_CACHE_DIR", "samples/llm_cache")
 _API_KEY_VARS = ("GEMINI_API_KEY", "GOOGLE_API_KEY")
 
 
+def _load_dotenv_if_present() -> None:
+    """Best-effort load of a local ``.env`` (git-ignored) so the key can live in a
+    file instead of the shell/chat. Optional — silently skipped if python-dotenv
+    isn't installed. Never overrides an already-set env var."""
+
+    try:
+        from dotenv import load_dotenv
+    except Exception:
+        return
+    load_dotenv(override=False)
+
+
 def _read_api_key() -> str | None:
+    _load_dotenv_if_present()
     for var in _API_KEY_VARS:
         value = os.environ.get(var)
         if value:
