@@ -8,12 +8,26 @@ import React, { useEffect, useMemo, useState } from "react";
 const API = "/api";
 
 function ConfidenceBar({ value }) {
-  const pct = Math.round((Number(value) || 0) * 100);
-  const hue = Math.round(120 * (Number(value) || 0)); // red→green
+  const v = Math.max(0, Math.min(1, Number(value) || 0));
+  const pct = Math.round(v * 100);
+  // Warm-anchored scale: ember-red (low) → gold → green (high). Never a cool red.
+  const hue = Math.round(12 + 118 * v);
   return (
     <div className="confbar" title={`confidence ${pct}%`}>
-      <div className="confbar-fill" style={{ width: `${pct}%`, background: `hsl(${hue} 70% 45%)` }} />
+      <div className="confbar-fill" style={{ width: `${pct}%`, background: `hsl(${hue} 78% 52%)`, color: `hsl(${hue} 78% 52%)` }} />
       <span className="confbar-label">{pct}%</span>
+    </div>
+  );
+}
+
+function Kpi({ label, value, unit, gold }) {
+  return (
+    <div className="kpi">
+      <div className="kpi-label">{label}</div>
+      <div className={`kpi-value${gold ? " gold" : ""}`}>
+        {value}
+        {unit && <span className="kpi-unit">{unit}</span>}
+      </div>
     </div>
   );
 }
@@ -220,6 +234,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
+        <span className="eyebrow">Candidate Intelligence</span>
         <h1>Multi-Source Candidate Data Transformer</h1>
         <p className="sub">Deterministic core · provenance &amp; confidence · runtime output projection</p>
       </header>
@@ -254,11 +269,17 @@ export default function App() {
         </div>
       </div>
 
-      {loading && <div className="status">Transforming…</div>}
+      {loading && <div className="status loading">Transforming…</div>}
       {error && <div className="status error">⚠ {error}</div>}
 
       {result && (
         <div className="results">
+          <div className="kpis">
+            <Kpi label="Candidates" value={result.count ?? 0} />
+            <Kpi label="Output Config" value={config} />
+            <Kpi label="Enrichment" value={result.enriched ? "On" : "Off"} />
+            <Kpi label="LLM Gap-fills" value={result.enrichment_report?.length ?? 0} gold />
+          </div>
           <div className="meta">
             {result.count} candidate(s){result.enriched ? " · enriched" : ""}
             {result.enriched && result.enrichment_report?.length > 0 && (
