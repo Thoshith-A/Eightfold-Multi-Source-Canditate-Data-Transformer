@@ -52,8 +52,12 @@ def test_schema_command() -> None:
     assert "candidate_id" in result.output
 
 
-def test_enrich_flag_without_lane_runs_deterministically(tmp_path: Path) -> None:
-    # --enrich with the LLM lane not installed -> warn + identical deterministic output.
+def test_enrich_flag_without_key_runs_deterministically(tmp_path: Path, monkeypatch) -> None:
+    # With no API key available, --enrich must fall back to byte-identical
+    # deterministic output. Forced hermetic (independent of any ambient .env/key).
+    import transformer.enrich.llm as llm
+
+    monkeypatch.setattr(llm, "_read_api_key", lambda: None)
     plain = tmp_path / "plain.json"
     enriched = tmp_path / "enriched.json"
     runner.invoke(app, ["run", "-i", str(SOURCES), "--default", "-o", str(plain)])

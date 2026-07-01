@@ -30,7 +30,7 @@ import logging
 from dataclasses import dataclass
 from typing import Any, Protocol, runtime_checkable
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 from transformer.adapters.base import FieldFragment, RawSource
 from transformer.enrich.cache import ContentAddressedCache
@@ -42,7 +42,7 @@ logger = logging.getLogger("transformer.enrich")
 
 # Bump this whenever the prompt changes — it's part of the cache key, so a new
 # template never silently reuses an old cached response.
-TEMPLATE_VERSION = "headline-summary-v1"
+TEMPLATE_VERSION = "headline-summary-v2"
 
 # Fixed, low confidence assigned to every LLM-derived value (auditable in the
 # run report; the canonical schema has no per-field scalar confidence slot, so
@@ -56,14 +56,16 @@ _MAX_CONTEXT_CHARS = 8000
 # --------------------------------------------------------------------------- #
 # Strict response schema (what the model is constrained to return)
 # --------------------------------------------------------------------------- #
+# NOTE: these response models must NOT set extra="forbid". Pydantic renders that
+# as "additionalProperties": false, which the Gemini response_schema API rejects
+# (400 INVALID_ARGUMENT). We still re-validate the model's response against these
+# models after the call, so unexpected extra keys are simply ignored.
 class ExperienceSummary(BaseModel):
-    model_config = ConfigDict(extra="forbid")
     company: str
     summary: str | None = None
 
 
 class EnrichmentResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
     headline: str | None = None
     experience: list[ExperienceSummary] = Field(default_factory=list)
 
@@ -111,9 +113,11 @@ def _render_prompt(context_text: str) -> str:
         "Use ONLY the text provided below. Do NOT infer, guess, or embellish.\n"
         "If a value is not explicitly supported by the text, return null for it.\n\n"
         "Return JSON with exactly these fields:\n"
-        '- "headline": a short professional headline/title for the candidate\n'
-        '  (e.g. "Senior Software Engineer") ONLY if such a title is explicitly\n'
-        "  stated in the text; otherwise null.\n"
+        '- "headline": a short professional headline for the candidate, grounded\n'
+        "  ONLY in the text. Prefer an explicitly-stated title; otherwise use the\n"
+        '  MOST RECENT role title present in the text (optionally "<title> at\n'
+        '  <company>"). Return null ONLY if the text names no title or role at\n'
+        "  all. Do NOT invent seniority, skills, or employers.\n"
         '- "experience": a list of objects {"company", "summary"} — one per\n'
         "  company named in the text. \"summary\" is a 1-2 sentence description\n"
         "  built ONLY from facts present in the text, or null if the text says\n"
